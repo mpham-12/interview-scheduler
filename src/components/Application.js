@@ -51,14 +51,44 @@ const appointments = [
 
 
 export default function Application(props) {
-  const [day, setDay] = useState('Monday')
-  const [days, setDays] = useState([]);
+  // const [day, setDay] = useState('Monday')
+  // const [days, setDays] = useState([]);
+
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {},
+  });
+
+  const dailyAppointments = [];
+
+  function setDay(dayName) {
+    setState({ ...state, day: dayName })
+  }
+
+  function setDays(days) {
+    setState(prev => ({ ...prev, days }));
+
+  }
 
   useEffect(() => {
     axios.get('/api/days').then(res => {
       setDays(res.data)
     })
   }, []);
+
+// Promise.all([
+//   axios.get('/api/days'),
+//   axios.get('/api/appointments'),
+//   axios.get('/api/interviewers'),
+// ]).then((all)=>{
+//   console.log(all[0]); // first
+//   console.log(all[1]); // second
+//   console.log(all[2]); // third
+//   const [first, second, third] = all;
+
+//   console.log(first, second, third);
+// })
 
   return (
     <main className="layout">
@@ -71,8 +101,8 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
           <DayList
-            days={days}
-            value={day}
+            days={state.days}
+            value={state.day}
             onChange={setDay}
           />
         </nav>
