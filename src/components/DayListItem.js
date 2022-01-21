@@ -25,7 +25,6 @@ export default function DayListItem(props) {
     'day-list__item--full': !props.spots
   });
 
-console.log(props)
   return (
     <li className={dayClass} onClick={handleClick}>
       <h2 className="text--regular">{props.name}</h2>
