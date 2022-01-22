@@ -6,12 +6,11 @@ import "components/Application.scss";
 import DayList from "./DayList";
 import "components/Appointment";
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
 
 
 export default function Application(props) {
-
 
   const [state, setState] = useState({
     day: "Monday",
@@ -22,23 +21,23 @@ export default function Application(props) {
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
-  // const schedule = dailyAppointments.map((appointment) => {
-  //   const interview = getInterview(state, appointment.interview);
+  const schedule = dailyAppointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
 
-  //   return (
-  //     <Appointment
-  //       key={appointment.id}
-  //       id={appointment.id}
-  //       time={appointment.time}
-  //       interview={interview}
-  //     />
-  //   );
-  // });
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+      />
+    );
+  });
+
 
   function setDay(dayName) {
     setState({ ...state, day: dayName })
   }
-  console.log(state)
 
   useEffect(() => {
     Promise.all([
@@ -80,9 +79,11 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {dailyAppointments.map(app => {
+        {/* {dailyAppointments.map(app => {
           return <Appointment key={app.id} {...app} />
-        })}
+        })} */}
+        {schedule}
+        
         <Appointment key="last" time="5pm" />
       </section>
       <Button></Button>
