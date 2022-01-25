@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { getAppointmentsForDay } from "helpers/selectors";
 
 export default function useApplicationData() {
 
@@ -7,7 +8,6 @@ export default function useApplicationData() {
     day: "Monday",
     days: [],
     appointments: {},
-    
   });
 
   function setDay(dayName) {
@@ -45,8 +45,8 @@ export default function useApplicationData() {
 
     return axios.put(`/api/appointments/${id}`, appointment)
       .then((res) => {
-        console.log(res);
         setState((prev) => ({ ...prev, appointments }));
+        updateSpots();
       })
       .catch((err) => {
         console.log(err);
@@ -65,12 +65,66 @@ export default function useApplicationData() {
     }
 
     return axios.delete(`/api/appointments/${id}`, appointment)
-      .then((res) => setState((prev) => ({ ...prev, appointments })))
+      .then((res) => {
+        setState((prev) => ({ ...prev, appointments }));
+        updateSpots();
+      })
+
   }
+
+
+  function updateSpots() {
+   
+    setState((prev) => {
+      const ApptForDays = getAppointmentsForDay(prev, prev.day);
+      const openSpots = ApptForDays.filter((appt) => !appt.interview).length;
+      const day = prev.days.find(dayObj => dayObj.name === prev.day);
+      const dayIndex = prev.days.indexOf(day);
+      prev.days[dayIndex] = { ...day, spots: openSpots }
+      console.log('prev.days----', prev.days[dayIndex])
+      return {
+        ...prev,
+        days: [...prev.days],
+      }
+    })
+
+
+
+
+    // const selectedDay = selectDay(state.day)
+    // state.days[selectDay.spots]
+    // let day = {
+    //   ...state.days[selectedDay],
+    //   spots: state.days[selectedDay]
+    // }
+
+    // let days = state.days;
+    // days[selectedDay] = day;
+
+    // if (!state.appointments[id].interview) {
+    //   day = {
+    //     ...state.days[selectedDay],
+    //     spots: state.days[selectedDay].spots - 1
+    //   }
+    // } else {
+    //   day = {
+    //     ...state.days[selectedDay],
+    //     spots: state.days[selectedDay].spots + 1
+    //   }
+    // }
+
+    // return axios.put(`/api/appointments/${id}`)
+    //   .then((res) => {
+    //     console.log(res);
+    //     setState((prev) => ({ ...prev, days }));
+    //   })
+  }
+
   return {
     state,
     setDay,
     bookInterview,
-    cancelInterview
-   } 
+    cancelInterview,
+    updateSpots
+  }
 }
