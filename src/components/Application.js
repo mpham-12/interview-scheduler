@@ -19,8 +19,46 @@ export default function Application(props) {
     interviewers: {}
   });
 
-  const dailyAppointments = getAppointmentsForDay(state, state.day);
+  function bookInterview(id, interview) {
 
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    setState({
+      ...state,
+      appointments,
+    });
+
+    return axios.put(`/api/appointments/${id}`, appointment)
+      .then((res) => {
+        console.log(res);
+        setState((prev) => ({ ...prev, appointment }));
+      })
+      .catch((err) => { console.log(err) })
+  }
+
+  function cancelInterview(id) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    }
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    }
+    setState({ ...state, appointments });
+
+    return axios.delete(`/api/appointments/${id}`, appointment)
+  }
+
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
   const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
 
@@ -30,14 +68,22 @@ export default function Application(props) {
         id={appointment.id}
         time={appointment.time}
         interview={interview}
+        bookInterview={bookInterview}
+        interviewers={getInterviewersForDay(state, state.day)}
+        cancelInterview={cancelInterview}
       />
     );
   });
 
 
+
+
   function setDay(dayName) {
     setState({ ...state, day: dayName })
   }
+
+
+
 
   useEffect(() => {
     Promise.all([
@@ -83,7 +129,7 @@ export default function Application(props) {
           return <Appointment key={app.id} {...app} />
         })} */}
         {schedule}
-        
+
         <Appointment key="last" time="5pm" />
       </section>
       <Button></Button>

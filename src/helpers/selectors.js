@@ -23,10 +23,12 @@ export function getInterview(state, interview) {
 
 export function getInterviewersForDay(state, day) {
   const filteredInt = state.days.filter(dayObj => dayObj.name === day);
+
   if (filteredInt.length === 0) {
     return [];
   } else {
-    console.log(filteredInt)
-    return filteredInt[0].appointments.map(e => state.interviewers[e])
+    return filteredInt[0].interviewers.map(e => {
+     return state.interviewers[e]
+    })
   }
 }
