@@ -25,24 +25,15 @@ export default function Application(props) {
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   const schedule = dailyAppointments.map((appointment) => {
-    const interview = getInterview(state, appointment.interview);
 
     return (
       <Appointment
-        // key={appointment.id}
-        // id={appointment.id}
-        // time={appointment.time}
-        // interview={interview}
-        // bookInterview={bookInterview}
-        // interviewers={interviewers}
-        // cancelInterview={cancelInterview}
         key={appointment.id}
         {...appointment}
         interview={getInterview(state, appointment.interview)}
         interviewers={interviewers}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
-        updateSpots={updateSpots}
       />
     );
   });
@@ -64,7 +55,6 @@ export default function Application(props) {
             onChange={setDay}
             bookInterview={bookInterview}
           cancelInterview={cancelInterview}
-          updateSpots={updateSpots}
           />
         </nav>
         <img
