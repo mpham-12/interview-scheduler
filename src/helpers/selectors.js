@@ -21,10 +21,10 @@ export function getInterview(state, interview) {
 }
 
 export function getInterviewersForDay(state, day) {
-    const filteredDay = state.days.find(item => item.name === day);
-    if (filteredDay && filteredDay.interviewers.length !== 0) {
-      return filteredDay.interviewers.map(app => state.interviewers[app])
-    } else {
-      return [];
-    }
-  };
+  const filteredDay = state.days.find(item => item.name === day);
+  if (filteredDay && filteredDay.interviewers.length !== 0) {
+    return filteredDay.interviewers.map(app => state.interviewers[app])
+  } else {
+    return [];
+  }
+};

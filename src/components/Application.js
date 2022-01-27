@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Button from "./Button";
 
 import "components/Application.scss";
@@ -17,7 +17,6 @@ export default function Application(props) {
     setDay,
     bookInterview,
     cancelInterview,
-    updateSpots
   } = useApplicationData();
 
   const interviewers = getInterviewersForDay(state, state.day);
@@ -54,7 +53,7 @@ export default function Application(props) {
             value={state.day}
             onChange={setDay}
             bookInterview={bookInterview}
-          cancelInterview={cancelInterview}
+            cancelInterview={cancelInterview}
           />
         </nav>
         <img
