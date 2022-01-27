@@ -1,4 +1,4 @@
-import { getAppointmentsForDay, getInterview , getInterviewersForDay} from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
 // Test Data
 const state = {
@@ -6,11 +6,14 @@ const state = {
     {
       id: 1,
       name: "Monday",
+      interviewers: [1, 2, 3],
       appointments: [1, 2, 3]
+
     },
     {
       id: 2,
       name: "Tuesday",
+      interviewers: [4, 5],
       appointments: [4, 5]
     }
   ],
@@ -30,13 +33,28 @@ const state = {
     }
   },
   interviewers: {
-    "1": {  
+    "1": {
       "id": 1,
       "name": "Sylvia Palmer",
       "avatar": "https://i.imgur.com/LpaY82x.png"
     },
     "2": {
       id: 2,
+      name: "Tori Malcolm",
+      avatar: "https://i.imgur.com/Nmx0Qxo.png"
+    },
+    "3": {
+      id: 3,
+      name: "Tori Malcolm",
+      avatar: "https://i.imgur.com/Nmx0Qxo.png"
+    },
+    "4": {
+      id: 4,
+      name: "Tori Malcolm",
+      avatar: "https://i.imgur.com/Nmx0Qxo.png"
+    },
+    "5": {
+      id: 5,
       name: "Tori Malcolm",
       avatar: "https://i.imgur.com/Nmx0Qxo.png"
     }
